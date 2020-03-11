@@ -318,7 +318,7 @@
 
       //for loop starts at row n-2, then decrements
       for (lowerLimit; lowerLimit <= upperLimit; lowerLimit++) {
-        if (this.hasMajorDiagonalConflictAt(lowerLimit)) {
+        if (this.hasMinorDiagonalConflictAt(lowerLimit)) {
           return true;
         }
       }
