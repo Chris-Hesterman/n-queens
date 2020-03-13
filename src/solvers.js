@@ -10,16 +10,13 @@
 // (There are also optimizations that will allow you to skip a lot of the dead search space)
 // take a look at solversSpec.js to see what the tests are expecting
 
-
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n rooks placed such that none of them can attack each other
-
-
 
 window.findNRooksSolution = function(n) {
   //give us matrix
   let solutionBoard = new Board({ n: n });
   let solution = solutionBoard.rows();
-  
+
   for (let i = 0; i < n; i++) {
     solutionBoard.togglePiece(i, i);
   }
@@ -30,44 +27,79 @@ window.findNRooksSolution = function(n) {
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
-  var solutionCount = 0; //fixme
-  let solutionBoard = new Board({ n: n });
-  solutionBoard.children = [];
-  console.log(solutionBoard.children);
-   
-//Each Parent: Row 0[0] until row 0[n-1]
-
-//Recrusion/helper function will take in each parent
-let rookPlacer = function (solutionBoard) {
-
-  solutionBoard.togglePiece(i?, i?)
-    //base case if hasNoConflicts -> count++
-    
-    //recursion
-    if (!this.hasAnyRooksConflicts) {
-      rookPlacer(....)
-    } else {
-      solutionBoard.togglePiece(?, ?),
-      solutionBoard.togglePiece(same row?, next col?)
-      recurse?
-    }
-
-    //if no conflict, then it's a child so recurse
-  var treeMaker = function (val) {
+  var Tree = function(val) {
     this.value = val;
     this.children = [];
-  }
-  
-  // //access matrix: arrays of arrays via .rows 
+  };
+
+  Tree.prototype.addChild = function(value) {
+    let child = new Tree(value);
+    this.children.push(child);
+  };
+
+  var solutionCount = 0;
+  let solutionBoard = new Board({ n: n });
+  let root = new Tree(solutionBoard);
+  let count = 0;
+
+  // if (n === 1) {
+  //   solutionCount++;
+  // }
+
+  let rookPlacer = function(parentTree) {
+    //if parent tree has no kids then return
+    //parentTree.count === n;
+    if (count === n) {
+      return;
+    }
+
+    for (let row = 0; row < n; row++) {
+      //count++;
+
+      for (var col = 0; col < n; col++) {
+        let child = new Tree(new Board({ n: n }));
+        console.log(child);
+
+        child.value.togglePiece(row, col);
+        if (!child.hasAnyRooksConflicts) {
+          count++;
+          parentTree.children.push(child);
+          rookPlacer(child);
+        }
+      }
+    }
+    let increment = parentTree.children.length;
+    solutionCount += increment;
+  };
+
+  rookPlacer(root);
+  //Each Parent: Row 0[0] until row 0[n-1]
+
+  //Recrusion/helper function will take in each parent
+
+  // solutionBoard.togglePiece(i?, i?)
+  //   //base case if hasNoConflicts -> count++
+
+  //   //recursion
+  //   if (!this.hasAnyRooksConflicts) {
+  //     rookPlacer(....)
+  //   } else {
+  //     solutionBoard.togglePiece(?, ?),
+  //     solutionBoard.togglePiece(same row?, next col?)
+  //     recurse?
+  //   }
+
+  //if no conflict, then it's a child so recurse
+
+  // //access matrix: arrays of arrays via .rows
   // let matrix = solutionBoard.rows();
   // let n = solutionBoard.get('n');
 
   // //start with row 0. recursed starting at each parent: col indices of row 0
   //   //place first piece at col 1
-    
+
   //   //hasAnyRooksConflicts
   // for (let i = 0; i < solutionBoard[0].length; i++) {
-
 
   // }
   // let rookPlacer = function (solutionBoard) {
@@ -81,7 +113,7 @@ let rookPlacer = function (solutionBoard) {
   //   for (let i = 0; i < n; i++) {
 
   //   }
-// }
+  // }
 
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
 
@@ -93,7 +125,10 @@ window.findNQueensSolution = function(n) {
   let solutionBoard = new Board({ n: n }); //fixme
   let solution = solutionBoard.rows();
 
-  console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
+  console.log(
+    'Single solution for ' + n + ' queens:',
+    JSON.stringify(solution)
+  );
   return solution;
 };
 
