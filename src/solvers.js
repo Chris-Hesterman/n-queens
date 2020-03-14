@@ -27,52 +27,93 @@ window.findNRooksSolution = function(n) {
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
-  var Tree = function(val) {
-    this.value = val;
-    this.children = [];
-  };
+  var solutionCount = 0; //fixme
 
-  Tree.prototype.addChild = function(value) {
-    let child = new Tree(value);
-    this.children.push(child);
-  };
+  //create instance of the board as newboard
+  var solutionBoard = new Board({ n: n });
 
-  var solutionCount = 0;
-  let solutionBoard = new Board({ n: n });
-  let root = new Tree(solutionBoard);
-  let count = 0;
+  // //recursion function: input whole board
+  // var rowCount = 0;
 
-  // if (n === 1) {
-  //   solutionCount++;
-  // }
+  // for (var row = count; row < n; row++) {
 
-  let rookPlacer = function(parentTree) {
-    //if parent tree has no kids then return
-    //parentTree.count === n;
+  var searchNRooksSolutions = function(board, count) {
+    var row = count;
+    //base case - if it has no child, last piece is placed using counter var
     if (count === n) {
-      return;
+      //return incremenent the solution count by one
+      solutionCount++;
     }
 
-    for (let row = 0; row < n; row++) {
-      //count++;
-
+    //iterate each row and column to place piece (toggle)
+    while (row < n) {
       for (var col = 0; col < n; col++) {
-        let child = new Tree(new Board({ n: n }));
-        console.log(child);
-
-        child.value.togglePiece(row, col);
-        if (!child.hasAnyRooksConflicts) {
-          count++;
-          parentTree.children.push(child);
-          rookPlacer(child);
+        //place piece at the upper right corner as the starting point
+        board.togglePiece(row, col);
+        //if has no conflict
+        if (!board.hasAnyRooksConflicts()) {
+          //recurse to place next piece, and increase the count by 1
+          searchNRooksSolutions(board, count + 1);
+          //reset board
+          board.togglePiece(row, col);
+        } else {
+          //remove piece and move onto the next iteration, un-toggle
+          board.togglePiece(row, col);
         }
       }
+
+      return;
     }
-    let increment = parentTree.children.length;
-    solutionCount += increment;
   };
 
-  rookPlacer(root);
+  searchNRooksSolutions(solutionBoard, 0);
+
+  // var Tree = function(val) {
+  //   this.value = val;
+  //   this.children = [];
+  // };
+
+  // Tree.prototype.addChild = function(value) {
+  //   let child = new Tree(value);
+  //   this.children.push(child);
+  // };
+
+  // var solutionCount = 0;
+  // let solutionBoard = new Board({ n: n });
+  // let root = new Tree(solutionBoard);
+  // let count = 0;
+
+  // // if (n === 1) {
+  // //   solutionCount++;
+  // // }
+
+  // let rookPlacer = function(parentTree) {
+  //   //if parent tree has no kids then return
+  //   //parentTree.count === n;
+  //   if (count === n) {
+  //     return;
+  //   }
+
+  //   for (let row = 0; row < n; row++) {
+  //     //count++;
+
+  //     for (var col = 0; col < n; col++) {
+  //       let child = new Tree(new Board({ n: n }));
+  //       console.log(child);
+
+  //       child.value.togglePiece(row, col);
+  //       if (!child.hasAnyRooksConflicts) {
+  //         count++;
+  //         parentTree.children.push(child);
+  //         rookPlacer(child);
+  //       }
+  //     }
+  //   }
+  //   let increment = parentTree.children.length;
+  //   solutionCount += increment;
+  // };
+
+  // rookPlacer(root);
   //Each Parent: Row 0[0] until row 0[n-1]
 
   //Recrusion/helper function will take in each parent
