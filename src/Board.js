@@ -262,63 +262,61 @@
       //get size of matrix, n rows/columns
       let n = this.get('n');
 
-      //count variable for pieces
-      let count = 0;
+      //count variable for pieces that have conflict
+      let countPieces = 0;
 
-      if (minorDiagonalColumnIndexAtFirstRow <= n - 1) {
-        //iterating through each row
-        for (var r = 0; r < n; r++) {
-          //var row at that index
-          let row = this.get(r);
-          //if there's a piece at that row with that index then increase count
-          if (row[minorDiagonalColumnIndexAtFirstRow] === 1) {
-            count++;
-          }
-          //increment index for the next
+      //if (minorDiagonalColumnIndexAtFirstRow < n) {
+      //iterating through each row
+      for (var rowIndex = 0; rowIndex < n; rowIndex++) {
+        //var row at that index
+        let row = this.get(rowIndex);
+        //if there's a piece at that row with that index then increase count
+        if (row[minorDiagonalColumnIndexAtFirstRow] === 1) {
+          countPieces++;
+        }
+        //increment index for the next
+        if (minorDiagonalColumnIndexAtFirstRow > 0) {
           minorDiagonalColumnIndexAtFirstRow--;
         }
-      } else {
-        //start with row [minor - (n - 1)], and column index [n-1]
-        //row increment
-        //column decrement
-        count = 0;
-        //r will now be starting row index
-        let r2 = minorDiagonalColumnIndexAtFirstRow - (n - 1);
-
-        //starting index for column
-        let col = n - 1;
-
-        //iterate each row
-        for (r2; r2 < n; r2++) {
-          //access to row
-          let row2 = this.get(r2);
-
-          //within the row , start index will be n - 1
-          if (row2[col] === 1) {
-            count++;
-          }
-          col--;
-        }
       }
+      // } else {
+      //   //start with row [minor - (n - 1)], and column index [n-1]
+      //   //row increment
+      //   //column decrement
+      //   countPieces = 0;
+      //   //r will now be starting row index
+      //   let row2 = minorDiagonalColumnIndexAtFirstRow - (n - 1);
 
-      return count > 1; // fixme
+      //   //starting index for column
+      //   let col = n - 1;
+
+      //   //iterate each row
+      //   for (row2; row2 < n; row2++) {
+      //     //access to row
+      //     let boardRow2 = this.get(row2);
+
+      //     //within the row , start index will be n - 1
+      //     if (boardRow2[col] === 1) {
+      //       countPieces++;
+      //     }
+      //     col--;
+      //   }
+      // }
+
+      return countPieces > 1; // fixme
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
       //start at 0 and end at n + 1
-
       //get the matrix, this will give us the n rows/columns
       let n = this.get('n');
-
-      //create a lower limit for minorDiagonalColumnIndexAtFirstRow
-      let lowerLimit = 1;
       //create an upper limit for minorDiagonalColumnIndexAtFirstRow
-      let upperLimit = n + 1;
+      let upperLimit = n + (n - 2);
 
       //for loop starts at row n-2, then decrements
-      for (lowerLimit; lowerLimit <= upperLimit; lowerLimit++) {
-        if (this.hasMinorDiagonalConflictAt(lowerLimit)) {
+      for (let i = 1; i <= upperLimit; i++) {
+        if (this.hasMinorDiagonalConflictAt(i)) {
           return true;
         }
       }
