@@ -71,26 +71,64 @@ window.countNRooksSolutions = function(n) {
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
+  // let solutionBoard = new Board({ n: n });
+  // let solution = solutionBoard.rows();
+  // let start = n === 1 ? 0 : 1;
+
+  // for (var row = 0; row < n; row++) {
+  //   if (row > 0) {
+  //     start = 0;
+  //   }
+  //   for (var col = start; col < n; col++) {
+  //     //place piece at the upper right corner as the starting point
+  //     solutionBoard.togglePiece(row, col);
+
+  //     //if has no conflict
+  //     if (solutionBoard.hasAnyQueensConflicts()) {
+  //       //remove piece and move onto the next iteration, un-toggle
+  //       solutionBoard.togglePiece(row, col);
+  //     } else {
+  //       start = col + 2;
+  //     }
+  //   }
+  // }
   let solutionBoard = new Board({ n: n });
-  let solution = solutionBoard.rows();
-  let start = n === 1 ? 0 : 1;
-
-  for (var row = 0; row < n; row++) {
-    if (row > 0) {
-      start = 0;
+  let solution = null;
+  var searchNQueensSolutions = function(solutionBoard, count) {
+    //base case - if it has no child, last piece is placed using counter var
+    if (count === n) {
+      //return incremenent the solution count by one
+      solution = solutionBoard.rows();
+      return solution;
     }
-    for (var col = start; col < n; col++) {
-      //place piece at the upper right corner as the starting point
-      solutionBoard.togglePiece(row, col);
-
-      //if has no conflict
-      if (solutionBoard.hasAnyQueensConflicts()) {
-        //remove piece and move onto the next iteration, un-toggle
+    //iterate each row and column to place piece (toggle)
+    for (var row = count; row < n; row++) {
+      for (var col = 0; col < n; col++) {
+        //place piece at the upper right corner as the starting point
         solutionBoard.togglePiece(row, col);
-      } else {
-        start = col;
+        //if has no conflict
+        if (!solutionBoard.hasAnyQueensConflicts()) {
+          //recurse to place next piece, and increase the count by 1
+          if (searchNQueensSolutions(solutionBoard, count + 1) !== undefined) {
+            return solution;
+          }
+        }
+        //reset board
+        solutionBoard.togglePiece(row, col);
+        //if it iterates to the last column without a solution, then go back to parent
+        if (col === n - 1) {
+          return;
+        }
       }
+      // return;
     }
+  };
+
+  searchNQueensSolutions(solutionBoard, 0);
+
+  //if no solution, return empty board (nested arrays)
+  if (solution === null) {
+    return solutionBoard.rows();
   }
 
   // let count = 0;
@@ -137,10 +175,50 @@ window.findNQueensSolution = function(n) {
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 window.countNQueensSolutions = function(n) {
-  var solutionCount = undefined; //fixme
+  var nonRepeating = [];
+  var solutionCount = 0; //fixme
+  if (n === 0) {
+    return solutionCount;
+  }
+
+  //create instance of the board as newboard
+  var solutionBoard = new Board({ n: n });
+  // //recursion function: input whole board
+  // var rowCount = 0;
+  // for (var row = count; row < n; row++) {
+  var searchNQueensSolutions = function(board, row) {
+    //base case - if it has no child, last piece is placed using counter var
+    if (row === n) {
+      //return incremenent the solution count by one
+
+      // let solutionString = JSON.stringify(solutionInstance);
+      // console.log(solutionInstance);
+      console.log(board.rows());
+      solutionCount++;
+      return;
+    }
+    //iterate each row and column to place piece (toggle)
+    // for (var row = count; row < n; row++) {
+    for (var col = 0; col < n; col++) {
+      //place piece at the upper right corner as the starting point
+      board.togglePiece(row, col);
+
+      //if has no conflict
+      if (!board.hasAnyQueensConflicts()) {
+        // board.togglePiece(row, col);
+        //recurse to place next piece, and increase the count by 1
+        searchNQueensSolutions(board, row + 1);
+      }
+      //reset board
+      //remove piece and move onto the next iteration, un-toggle
+      board.togglePiece(row, col);
+    }
+  };
+  searchNQueensSolutions(solutionBoard, 0);
 
   //edge case: min n with queen solutions is 4. double check
 
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
+  // console.log(nonRepeating);
   return solutionCount;
 };

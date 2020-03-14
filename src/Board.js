@@ -200,7 +200,7 @@
       if (majorDiagonalColumnIndexAtFirstRow >= 0) {
         //iterating through each row
         count = 0;
-        for (var r = 0; r < n - 1; r++) {
+        for (var r = 0; r < n; r++) {
           //var row at that index
           let row = this.get(r);
           //if there's a piece at that row with that index then increase count
