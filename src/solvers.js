@@ -58,7 +58,7 @@ window.countNRooksSolutions = function(n) {
 //time complexity O(n);
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
-https: window.findNQueensSolution = function(n) {
+window.findNQueensSolution = function(n) {
   var solutionBoard = new Board({ n: n });
   var solution = null;
 
