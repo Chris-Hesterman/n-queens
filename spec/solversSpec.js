@@ -94,7 +94,7 @@ describe('solvers', function() {
   });
 
   describe('countNQueensSolutions()', function() {
-    it('finds the number of valid solutions for n of 0-13', function() {
+    it('finds the number of valid solutions for n of 0-9', function() {
       // _.range(0, 9).map(function(n) {
       _.range(0, 9).map(function(n) {
         var solutionCount = countNQueensSolutions(n);

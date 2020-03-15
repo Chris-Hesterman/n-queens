@@ -118,10 +118,10 @@
     //
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex) {
-      let row = this.get(rowIndex);
-      let pieceCount = 0;
+      var row = this.get(rowIndex);
+      var pieceCount = 0;
 
-      for (let square of row) {
+      for (var square of row) {
         //there is a piece at this square, increment piecepieceCount by 1
         if (square === 1) {
           pieceCount++;
@@ -130,16 +130,19 @@
       //true if pieceCount is more than one
       return pieceCount > 1;
     },
+    //time complexity O(n)
+
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
       //iterate through n rows
-      for (let i = 0; i < this.get('n'); i++) {
+      for (var i = 0; i < this.get('n'); i++) {
         if (this.hasRowConflictAt(i)) {
           return true;
         }
       }
       return false;
     },
+    //time complexity O(n)
 
     // COLUMNS - run from top to bottom
     // --------------------------------------------------------------
@@ -147,11 +150,11 @@
     // test if a specific column on this board contains a conflict
     //at specific index of each row
     hasColConflictAt: function(colIndex) {
-      let n = this.get('n');
-      let pieceCount = 0;
+      var n = this.get('n');
+      var pieceCount = 0;
 
       //iterate each row for colIndex (each column)
-      for (let i = 0; i < n; i++) {
+      for (var i = 0; i < n; i++) {
         //this.get[i] is each row
         if (this.get(i)[colIndex] === 1) {
           pieceCount++;
@@ -159,10 +162,11 @@
       }
       return pieceCount > 1; // fixme
     },
+    //time complexity O(n)
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      let n = this.get('n');
+      var n = this.get('n');
 
       //iterate each row
       for (var i = 0; i < n; i++) {
@@ -173,19 +177,20 @@
       }
       return false;
     },
+    //time complexity O(n)
 
     // Major Diagonals - go from top-left to bottom-right
     // --------------------------------------------------------------
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      let n = this.get('n');
+      var n = this.get('n');
 
-      let pieceCount = 0;
+      var pieceCount = 0;
 
       //if majorDiagonalColumnIndexAtFirstRow is positive
       for (var r = 0; r < n; r++) {
-        let row = this.get(r);
+        var row = this.get(r);
         //if there's a piece at that row with that index then increase pieceCount
         if (row[majorDiagonalColumnIndexAtFirstRow] === 1) {
           pieceCount++;
@@ -196,32 +201,34 @@
 
       return pieceCount > 1;
     },
+    ////time complexity O(n)
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      let n = this.get('n');
+      var n = this.get('n');
       //create an upper limit for majorDiagonalColumnIndexAtFirstRow
-      let upperLimit = n - 2;
+      var upperLimit = n - 2;
 
-      for (let topRowIndex = 2 - n; topRowIndex <= upperLimit; topRowIndex++) {
+      for (var topRowIndex = 2 - n; topRowIndex <= upperLimit; topRowIndex++) {
         if (this.hasMajorDiagonalConflictAt(topRowIndex)) {
           return true;
         }
       }
       return false;
     },
+    //time complexity O(n)
 
     // Minor Diagonals - go from top-right to bottom-left
     // --------------------------------------------------------------
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
-      let n = this.get('n');
-      let pieceCount = 0;
+      var n = this.get('n');
+      var pieceCount = 0;
 
       //iterating through each row
       for (var rowIndex = 0; rowIndex < n; rowIndex++) {
-        let row = this.get(rowIndex);
+        var row = this.get(rowIndex);
         //if there's a piece at that row with that index then increase pieceCount
         if (row[minorDiagonalColumnIndexAtFirstRow] === 1) {
           pieceCount++;
@@ -234,21 +241,23 @@
 
       return pieceCount > 1;
     },
+    //time complexity O(n)
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      let n = this.get('n');
+      var n = this.get('n');
       //create an upper limit for minorDiagonalColumnIndexAtFirstRow
-      let upperLimit = n + (n - 2);
+      var upperLimit = n + (n - 2);
 
       //for loop starts at row n-2, then decrements
-      for (let i = 1; i <= upperLimit; i++) {
+      for (var i = 1; i <= upperLimit; i++) {
         if (this.hasMinorDiagonalConflictAt(i)) {
           return true;
         }
       }
       return false;
     }
+    //time complexity O(n)
     /*--------------------  End of Helper Functions  ---------------------*/
   });
 

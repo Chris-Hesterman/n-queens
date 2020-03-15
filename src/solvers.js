@@ -13,16 +13,17 @@
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n rooks placed such that none of them can attack each other
 
 window.findNRooksSolution = function(n) {
-  let solutionBoard = new Board({ n: n });
-  let solution = solutionBoard.rows();
+  var solutionBoard = new Board({ n: n });
+  var solution = solutionBoard.rows();
 
-  for (let i = 0; i < n; i++) {
+  for (var i = 0; i < n; i++) {
     solutionBoard.togglePiece(i, i);
   }
 
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
   return solution;
 };
+//time complexity O(n)
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
@@ -54,11 +55,13 @@ window.countNRooksSolutions = function(n) {
 
   return solutionCount;
 };
+//time complexity O(n);
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
-window.findNQueensSolution = function(n) {
-  let solutionBoard = new Board({ n: n });
-  let solution = null;
+https: window.findNQueensSolution = function(n) {
+  var solutionBoard = new Board({ n: n });
+  var solution = null;
+
   var searchNQueensSolutions = function(solutionBoard, count) {
     if (count === n) {
       //return incremenent the solution count by one
@@ -85,20 +88,20 @@ window.findNQueensSolution = function(n) {
       }
     }
   };
-
   searchNQueensSolutions(solutionBoard, 0);
 
   //if no solution, return empty board (nested arrays)
   if (solution === null) {
     return solutionBoard.rows();
   }
-
   console.log(
     'Single solution for ' + n + ' queens:',
     JSON.stringify(solution)
   );
+
   return solution;
 };
+//time complexity O(n**2);  room for improvement
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 window.countNQueensSolutions = function(n) {
@@ -134,3 +137,4 @@ window.countNQueensSolutions = function(n) {
 
   return solutionCount;
 };
+//time complexity O(n);
